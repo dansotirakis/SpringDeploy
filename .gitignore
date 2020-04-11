@@ -10,3 +10,9 @@ buildNumber.properties
 .mvn/wrapper/maven-wrapper.jar
 
 .idea/codeStyles
+
+.idea/libraries/
+
+.idea/
+
+RestMoviesRaspberryAwardsApi.iml
