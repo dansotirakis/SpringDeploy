@@ -8,8 +8,8 @@
   
 #### Commands run start project 
 
-- _`mvn clean package`
-- _`java -jar target/*.jar`
+- _`mvn clean package`_
+- _`java -jar target/*.jar`_
 
 
 #### Know endpoints conssuming:
