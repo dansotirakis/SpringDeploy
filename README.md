@@ -1,8 +1,13 @@
-<img src="https://raw.githubusercontent.com/swagger-api/swagger.io/wordpress/images/assets/SWU-logo-clr.png" width="150">
-
 ![Apache License, Version 2.0, January 2004](https://img.shields.io/github/license/apache/maven.svg?label=License)
 [![Maven Central](https://img.shields.io/maven-central/v/org.apache.maven/apache-maven.svg?label=Maven%20Central)](https://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22org.apache.maven%22%20AND%20a%3A%22apache-maven%22)
 ![Java CI with Maven](https://github.com/dansotirakis/SpringDeploy/workflows/Java%20CI%20with%20Maven/badge.svg)
+
+<img src="https://raw.githubusercontent.com/swagger-api/swagger.io/wordpress/images/assets/SWU-logo-clr.png" width="150">
+
+![java](https://image.flaticon.com/icons/png/128/919/919854.png)
+![Spring](https://hack24x7.com/img/icons/development/Spring.png)
+![api](https://image.flaticon.com/icons/png/128/103/103093.png)
+
 # SpringDeploy
 
   
