@@ -1,10 +1,10 @@
-//package br.com.restMovieRaspberryAwardsApi.testMovieService;
+//package br.com.restMovieApi.testMovieService;
 //
 //import java.util.ArrayList;
 //import java.util.List;
 //
-//import br.com.restMovieRaspberryAwardsApi.dto.MovieDTO;
-//import br.com.restMovieRaspberryAwardsApi.service.MovieService;
+//import MovieDTO;
+//import MovieService;
 //import io.restassured.RestAssured;
 //import org.hamcrest.Matchers;
 //import org.junit.Before;

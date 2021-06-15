@@ -1,21 +1,18 @@
-package br.com.restMovieRaspberryAwardsApi.model;
+package br.com.rest.movie.api.awards.application.model;
 
 import java.io.Serializable;
 
-import br.com.restMovieRaspberryAwardsApi.dto.MovieDTO;
+import br.com.rest.movie.api.awards.util.dto.MovieDTO;
+import lombok.Data;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Component
+@Data
 @Table(name = "filme")
-public class Movie implements Serializable {
+public class EntityMovie implements Serializable {
 
   private static final long serialVersionUID = 6020617195244815009L;
 
@@ -35,14 +32,14 @@ public class Movie implements Serializable {
   @Column(name = "producer", nullable = false)
   private String producer;
 
-  @Column(name = "champion", nullable = true)
-  private Boolean champion;
+  @Column(name = "champion")
+  private boolean champion;
 
-  public Movie() {
+  public EntityMovie() {
 
   }
 
-  public Movie(Long id, String year, String title, String recordCompany, String producer, Boolean champion) {
+  public EntityMovie(Long id, String year, String title, String recordCompany, String producer, Boolean champion) {
     super();
     this.id = id;
     this.year = year;
@@ -52,7 +49,7 @@ public class Movie implements Serializable {
     this.champion = champion;
   }
 
-  public Movie(MovieDTO movieDTO) {
+  public EntityMovie(MovieDTO movieDTO) {
     if (!"".equals(movieDTO.getYear())) {
       this.year = movieDTO.getYear();
     }
@@ -70,50 +67,6 @@ public class Movie implements Serializable {
 
   public Long getId() {
     return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public String getYear() {
-    return year;
-  }
-
-  public void setYear(String year) {
-    this.year = year;
-  }
-
-  public String getTitle() {
-    return title;
-  }
-
-  public void setTitle(String title) {
-    this.title = title;
-  }
-
-  public String getRecordCompany() {
-    return recordCompany;
-  }
-
-  public void setRecordCompany(String recordCompany) {
-    this.recordCompany = recordCompany;
-  }
-
-  public String getProducer() {
-    return producer;
-  }
-
-  public void setProducer(String producer) {
-    this.producer = producer;
-  }
-
-  public Boolean getChampion() {
-    return champion;
-  }
-
-  public void setChampion(Boolean champion) {
-    this.champion = champion;
   }
 
   public String toString() {

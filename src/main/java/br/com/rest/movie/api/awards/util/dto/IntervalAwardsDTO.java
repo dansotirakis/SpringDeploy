@@ -1,7 +1,12 @@
-package br.com.restMovieRaspberryAwardsApi.dto;
+package br.com.rest.movie.api.awards.util.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 import java.io.Serializable;
 
+@Data
+@AllArgsConstructor
 public class IntervalAwardsDTO implements Serializable, Comparable<IntervalAwardsDTO> {
 
   private static final long serialVersionUID = -8195197903314034973L;
@@ -13,42 +18,6 @@ public class IntervalAwardsDTO implements Serializable, Comparable<IntervalAward
 
   public IntervalAwardsDTO() {
     super();
-  }
-
-  public static int compareIntervalos(IntervalAwardsDTO a, IntervalAwardsDTO b) {
-    return a.interval.compareTo(b.interval);
-  }
-
-  public String getProducer() {
-    return producer;
-  }
-
-  public void setProducer(String producer) {
-    this.producer = producer;
-  }
-
-  public Integer getInterval() {
-    return interval;
-  }
-
-  public void setInterval(Integer interval) {
-    this.interval = interval;
-  }
-
-  public String getPreviousWin() {
-    return previousWin;
-  }
-
-  public void setPreviousWin(String previousWin) {
-    this.previousWin = previousWin;
-  }
-
-  public String getFollowingWin() {
-    return followingWin;
-  }
-
-  public void setFollowingWin(String followingWin) {
-    this.followingWin = followingWin;
   }
 
   @Override
