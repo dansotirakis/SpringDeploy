@@ -1,21 +1,17 @@
 package br.com.rest.movie.api.awards.domain;
 
-import java.io.IOException;
-import java.util.List;
-
-import br.com.rest.movie.api.awards.util.dto.MovieDTO;
+import br.com.rest.movie.api.awards.util.dto.EntityMovieDTO;
 import br.com.rest.movie.api.awards.util.dto.IntervalDTO;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 public interface IMovie {
 
-  List<MovieDTO> listMovies();
-
-  void save(List<MovieDTO> filmes);
+  ArrayList<EntityMovieDTO> listMovies();
 
   IntervalDTO findByIntervalAwards();
 
   void insertRecords() throws IOException;
-
-  void clearTable();
 
 }

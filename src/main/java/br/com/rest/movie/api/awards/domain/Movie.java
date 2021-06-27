@@ -1,65 +1,47 @@
 package br.com.rest.movie.api.awards.domain;
 
-import br.com.rest.movie.api.awards.application.controller.ApiMovieController;
 import br.com.rest.movie.api.awards.application.model.EntityMovie;
 import br.com.rest.movie.api.awards.infrastructure.repository.MovieRepository;
+import br.com.rest.movie.api.awards.util.dto.EntityMovieDTO;
 import br.com.rest.movie.api.awards.util.dto.IntervalAwardsDTO;
 import br.com.rest.movie.api.awards.util.dto.IntervalDTO;
-import br.com.rest.movie.api.awards.util.dto.MovieDTO;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
+@Slf4j
 @Service
-@Transactional
 @AllArgsConstructor
 public class Movie implements IMovie {
 
   private final URL csvFile = this.getClass().getResource("/movielist.csv");
 
-  private static final Logger log = LoggerFactory.getLogger(Movie.class);
+  public MovieRepository movieRepository;
 
-  private final MovieRepository movieRepository;
 
   @Override
   public void insertRecords() throws IOException {
-    List<MovieDTO> movies = uploadCsvFile();
-    this.save(movies);
+    this.save(movieRepository.uploadCsvFile(csvFile));
   }
 
   @Override
-  public List<MovieDTO> listMovies() {
-    List<MovieDTO> movieDTO = new ArrayList<>();
+  public ArrayList<EntityMovieDTO> listMovies() {
+    ArrayList<EntityMovieDTO> entityMovieDTO = new ArrayList<>();
     try {
-      List<EntityMovie> movies = this.findByMovies();
-      for (EntityMovie movie : movies) {
-        movieDTO.add(new MovieDTO(movie));
+      for (EntityMovie movie :this.findByMovies()) {
+        entityMovieDTO.add(new EntityMovieDTO(movie));
       }
-      return movieDTO;
+      return entityMovieDTO;
     } catch (Exception e) {
-      return movieDTO;
+      return entityMovieDTO;
     }
-  }
-
-  @Override
-  public void save(List<MovieDTO> films) {
-    if (films.isEmpty()) {
-      return;
-    }
-    List<EntityMovie> movies = new ArrayList<>();
-    for (MovieDTO movieDTO : films) {
-      movies.add(new EntityMovie(movieDTO));
-    }
-    movieRepository.saveAll(movies);
   }
 
   @Override
@@ -70,9 +52,42 @@ public class Movie implements IMovie {
     return intervalDTO;
   }
 
-  @Override
-  public void clearTable() {
-    movieRepository.clearTable();
+  public void save(List<EntityMovieDTO> films) {
+    if (films.isEmpty()) {
+      return;
+    }
+    List<EntityMovie> movies = new ArrayList<>();
+    for (EntityMovieDTO entityMovieDTO : films) {
+      movies.add(new EntityMovie(entityMovieDTO));
+    }
+    movieRepository.saveAll(movies);
+  }
+
+  public void extracted(List<IntervalAwardsDTO> intervalsDTO, List<EntityMovie> movies) {
+    for (EntityMovie movie : movies) {
+      if (!"yes".equalsIgnoreCase(movie.getChampion())) {
+        continue;
+      }
+      var interval = new IntervalAwardsDTO();
+      for (String producer : this.getProducers(movie)) {
+        interval.setProducer(producer);
+        var index = intervalsDTO.indexOf(interval);
+        if (intervalsDTO.contains(interval)) {
+          if (!intervalsDTO.get(index).getFollowingWin().equals(intervalsDTO.get(index).getPreviousWin())) {
+            continue;
+          }
+          intervalsDTO.get(index).setFollowingWin(movie.getYear());
+          intervalsDTO.get(index).setInterval(this.calculateInterval(intervalsDTO.get(index)));
+        } else {
+          intervalsDTO.add(IntervalAwardsDTO.builder()
+                  .followingWin(movie.getYear())
+                  .previousWin(movie.getYear())
+                  .interval(0)
+                  .producer(producer)
+                  .build());
+        }
+      }
+    }
   }
 
   private List<EntityMovie> findByMovies() {
@@ -91,7 +106,7 @@ public class Movie implements IMovie {
         return new IntervalAwardsDTO();
       }
       for (EntityMovie movie : movies) {
-        if (!movie.isChampion()) {
+        if (!"yes".equalsIgnoreCase(movie.getChampion())) {
           continue;
         }
         var interval = new IntervalAwardsDTO();
@@ -136,58 +151,6 @@ public class Movie implements IMovie {
     } catch (Exception e) {
       return new IntervalAwardsDTO();
     }
-  }
-
-  private void extracted(List<IntervalAwardsDTO> intervalsDTO, List<EntityMovie> movies) {
-    for (EntityMovie movie : movies) {
-      if (!movie.isChampion()) {
-        continue;
-      }
-      var interval = new IntervalAwardsDTO();
-      for (String producer : this.getProducers(movie)) {
-        interval.setProducer(producer);
-        var index = intervalsDTO.indexOf(interval);
-        if (intervalsDTO.contains(interval)) {
-          if (!intervalsDTO.get(index).getFollowingWin().equals(intervalsDTO.get(index).getPreviousWin())) {
-            continue;
-          }
-          intervalsDTO.get(index).setFollowingWin(movie.getYear());
-          intervalsDTO.get(index).setInterval(this.calculateInterval(intervalsDTO.get(index)));
-        } else {
-          var intervalAwardsDTO = new IntervalAwardsDTO();
-          intervalAwardsDTO.setPreviousWin(movie.getYear());
-          intervalAwardsDTO.setFollowingWin(movie.getYear());
-          intervalAwardsDTO.setInterval(0);
-          intervalAwardsDTO.setProducer(producer);
-          intervalsDTO.add(intervalAwardsDTO);
-        }
-      }
-    }
-  }
-
-  private List<MovieDTO> uploadCsvFile() throws IOException {
-    List<MovieDTO> movies = new ArrayList<>();
-    try {
-      assert csvFile != null;
-      try (var reader = new BufferedReader(new InputStreamReader(new FileInputStream(csvFile.getPath())))) {
-        String line;
-        var numberLine = 1;
-        while ((line = reader.readLine()) != null) {
-          if (numberLine == 1) {
-            numberLine++;
-            continue;
-          }
-          final var csvResource = ";";
-          String[] movieFields = line.split(csvResource);
-        log.warn("line to csv: {}", movieFields.length);
-          movies.add(new MovieDTO(movieFields[0], movieFields[1], movieFields[2], movieFields[3],
-                  movieFields.length == 5 ? "yes" : ""));
-        }
-      }
-    } catch (IOException e) {
-      throw new IOException(e.getMessage());
-    }
-    return movies;
   }
 
   private List<String> getProducers(EntityMovie movie) {

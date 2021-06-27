@@ -1,17 +1,17 @@
 package br.com.rest.movie.api.awards.application.model;
 
-import java.io.Serializable;
-
-import br.com.rest.movie.api.awards.util.dto.MovieDTO;
+import br.com.rest.movie.api.awards.application.model.enumeration.ChampionType;
+import br.com.rest.movie.api.awards.util.dto.EntityMovieDTO;
+import lombok.Builder;
 import lombok.Data;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-@Component
 @Data
 @Table(name = "filme")
+@Builder
 public class EntityMovie implements Serializable {
 
   private static final long serialVersionUID = 6020617195244815009L;
@@ -19,27 +19,17 @@ public class EntityMovie implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
-
-  @Column(name = "year", nullable = false)
   private String year;
-
-  @Column(name = "title", nullable = false)
   private String title;
-
-  @Column(name = "recordCompany", nullable = false)
   private String recordCompany;
-
-  @Column(name = "producer", nullable = false)
   private String producer;
-
-  @Column(name = "champion")
-  private boolean champion;
+  private String champion;
 
   public EntityMovie() {
 
   }
 
-  public EntityMovie(Long id, String year, String title, String recordCompany, String producer, Boolean champion) {
+  public EntityMovie(Long id, String year, String title, String recordCompany, String producer, String champion) {
     super();
     this.id = id;
     this.year = year;
@@ -49,20 +39,22 @@ public class EntityMovie implements Serializable {
     this.champion = champion;
   }
 
-  public EntityMovie(MovieDTO movieDTO) {
-    if (!"".equals(movieDTO.getYear())) {
-      this.year = movieDTO.getYear();
+  public EntityMovie(EntityMovieDTO entityMovieDTO) {
+    if (!"".equals(entityMovieDTO.getYear())) {
+      this.year = entityMovieDTO.getYear();
     }
-    if (!"".equals(movieDTO.getTitle())) {
-      this.title = movieDTO.getTitle();
+    if (!"".equals(entityMovieDTO.getTitle())) {
+      this.title = entityMovieDTO.getTitle();
     }
-    if (!"".equals(movieDTO.getRecordCompany())) {
-      this.recordCompany = movieDTO.getRecordCompany();
+    if (!"".equals(entityMovieDTO.getRecordCompany())) {
+      this.recordCompany = entityMovieDTO.getRecordCompany();
     }
-    if (!"".equals(movieDTO.getProducer())) {
-      this.producer = movieDTO.getProducer();
+    if (!"".equals(entityMovieDTO.getProducer())) {
+      this.producer = entityMovieDTO.getProducer();
     }
-    this.champion = !"".equals(movieDTO.getChampion());
+    this.champion = !"".equals(entityMovieDTO.getChampion())
+            ? ChampionType.YES.getDescription()
+            : ChampionType.NO.getDescription();
   }
 
   public Long getId() {
