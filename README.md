@@ -39,3 +39,72 @@
     Java 8
     Maven
     Swagger
+
+---
+
+### Structure
+```
+├───main
+│   ├───java
+│   │   └───br
+│   │       └───com
+│   │           └───rest
+│   │               └───movie
+│   │                   └───api
+│   │                       └───awards
+│   │                           │   Awards.java
+│   │                           │   lombok.config
+│   │                           │
+│   │                           ├───application
+│   │                           │   ├───controller
+│   │                           │   │       ApiMovieController.java
+│   │                           │   │
+│   │                           │   └───model
+│   │                           │       │   EntityMovie.java
+│   │                           │       │
+│   │                           │       └───enumeration
+│   │                           │               ChampionType.java
+│   │                           │
+│   │                           ├───domain
+│   │                           │       IMovie.java
+│   │                           │       Movie.java
+│   │                           │
+│   │                           ├───infrastructure
+│   │                           │   ├───configuration
+│   │                           │   │       SwaggerConfig.java
+│   │                           │   │
+│   │                           │   └───repository
+│   │                           │           MovieRepository.java
+│   │                           │
+│   │                           └───util
+│   │                               └───dto
+│   │                                       EntityMovieDTO.java
+│   │                                       IntervalAwardsDTO.java
+│   │                                       IntervalDTO.java
+│   │
+│   └───resources
+│           application.properties
+│           movielist.csv
+│           movielistTest.csv
+│
+└───test
+    └───java
+        └───br
+            └───com
+                └───rest
+                    └───movie
+                        └───api
+                            └───awards
+                                │   AwardsTest.java
+                                │
+                                ├───application
+                                │   └───controller
+                                │           ApiMovieControllerTest.java
+                                │
+                                ├───domain
+                                │       MovieTest.java
+                                │
+                                └───infrastructure
+                                    └───repository
+                                            MovieRepositoryTest.java
+```

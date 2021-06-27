@@ -2,21 +2,26 @@ package br.com.rest.movie.api.awards.application.controller;
 
 import br.com.rest.movie.api.awards.application.model.EntityMovie;
 import br.com.rest.movie.api.awards.domain.Movie;
+import br.com.rest.movie.api.awards.infrastructure.repository.MovieRepository;
 import br.com.rest.movie.api.awards.util.dto.EntityMovieDTO;
 import br.com.rest.movie.api.awards.util.dto.IntervalAwardsDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doCallRealMethod;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -26,7 +31,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class ApiMovieControllerTest {
 
     private static final String BASE_URL = "/awards";
-    private final URL csvFile = this.getClass().getResource("/movielistTest.csv");
+
+    @Mock
+    MovieRepository movieRepository;
 
     @Autowired
     private MockMvc mockMvc;
@@ -90,16 +97,16 @@ class ApiMovieControllerTest {
     }
 
     @Test
-    void testPostRecords() throws Exception {
+    void when_testPostRecords_ShouldIsAccepted() throws Exception {
 
-        given(movie.uploadCsvFile(csvFile)).willReturn(movieDTOS);
+        movie.insertRecords();
 
         this.mockMvc.perform(post(BASE_URL+"/records"))
                 .andExpect(status().isAccepted());
     }
 
     @Test
-    void testList() throws Exception {
+    void when_testList_ShouldIsOk() throws Exception {
 
         given(movie.listMovies()).willReturn(movieDTOS);
 
@@ -108,11 +115,12 @@ class ApiMovieControllerTest {
     }
 
     @Test
-    void testIntervalAwards() throws Exception {
+    void when_testIntervalAwards_ShouldIsOk() throws Exception {
 
         doCallRealMethod().when(movie).extracted(intervalAwardsDTOS, entityMovies);
 
         this.mockMvc.perform(get(BASE_URL+"/interval-awards"))
                 .andExpect(status().isOk());
     }
+
 }
