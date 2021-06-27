@@ -33,15 +33,17 @@
 #### Run tests: 
 - _`mvn clean test`_
 
+#### Report sonar
+- _`mvn sonar:sonar`_
 
-#### Stack's project:
+
+### Stack's project:
 
     Java 8
     Maven
     Swagger
 
 ---
-
 ### Structure
 ```
 ├───main
@@ -108,3 +110,9 @@
                                     └───repository
                                             MovieRepositoryTest.java
 ```
+---
+### SonarQube
+![img.png](assets/sonarQube.png)
+---
+### Jacoco
+![img_1.png](assets/jacoco.png)
