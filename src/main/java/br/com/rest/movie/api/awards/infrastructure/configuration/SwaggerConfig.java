@@ -1,4 +1,4 @@
-package br.com.restMovieRaspberryAwardsApi;
+package br.com.rest.movie.api.awards.infrastructure.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,10 +14,10 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig extends WebMvcConfigurationSupport {
-  String api = "br.com.restMovieRaspberryAwardsApi";
+  String api = "br.com.rest.movie.api.awards";
 
   @Bean
-  public Docket RestMovieRaspberryAwardsApi() {
+  public Docket restMovieRaspberryAwardsApi() {
     return new Docket(DocumentationType.SWAGGER_2)
         .select()
         .apis(RequestHandlerSelectors.basePackage(api))
