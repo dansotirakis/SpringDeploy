@@ -150,8 +150,6 @@ class MovieTest {
 
     @Test
     void when_testDomain_InvalidInputFileException() throws IOException {
-        assert csvFile != null;
-
         when(movieRepository.uploadCsvFile(any(URL.class))).thenThrow(new IOException());
 
         assertThrows(IOException.class, () -> movie.movieRepository.uploadCsvFile(csvFile));
