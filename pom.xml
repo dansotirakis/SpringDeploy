@@ -148,7 +148,6 @@
 
     <build>
         <plugins>
-            <!-- Runs JUnit tests under code coverage and creates a coverage report (target/site/jacoco/index.html). -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
